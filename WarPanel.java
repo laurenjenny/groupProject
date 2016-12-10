@@ -23,7 +23,7 @@ public class WarPanel extends JPanel
 	final JButton newGame = new JButton("New Game");
     final JButton quit = new JButton("Quit");
     JButton draw = new JButton("Draw");
-    WarTemp game = new WarTemp();
+    private War game = new War();
     boolean win = false;
     
     final JLabel ai1Card1 = new JLabel();
@@ -51,7 +51,7 @@ public class WarPanel extends JPanel
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                game.playGame();
+                game.startGame();
                 resetCards();
             }
         });
@@ -122,9 +122,11 @@ public class WarPanel extends JPanel
         //Hit button Action
         playBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {            	
-                win = game.playRound();
-                draw();
+            public void actionPerformed(ActionEvent e) {   
+            	Card playersCard = game.player.playCard();
+            	Card ai1Card = game.ai1.playCard();
+                win = game.playRound(playersCard, ai1Card);
+                draw(playersCard, ai1Card);
             }
         });
         
@@ -156,32 +158,37 @@ public void resetCards(){
         message.setVisible(false);
         gameMessage.setVisible(false);
         menu.setVisible(false);
-        ai1Total.setText(String.valueOf(game.aiDeck.size()));
-        playerTotal.setText(String.valueOf(game.playerDeck.size()));
+        ai1Total.setText(String.valueOf(game.ai1.size()));
+        playerTotal.setText(String.valueOf(game.player.size()));
         
         //Cards
         ai1Card1.setVisible(false);
         playerCard1.setVisible(false);
     }
 
-public void draw(){
-	ai1Card1.setIcon(game.aiDeck.get(0).getIcon());
-    playerCard1.setIcon(game.playerDeck.get(0).getIcon());
+public void draw(Card playerCard, Card ai1Card){
+	
+    ai1Card1.setIcon(game.ai1.get(0).getIcon());
+    playerCard1.setIcon(game.player.get(0).getIcon());
     ai1Card1.setVisible(true);
     playerCard1.setVisible(true);
     gameMessage.setVisible(true);
-    ai1Total.setText(String.valueOf(game.aiDeck.size()));
-    playerTotal.setText(String.valueOf(game.playerDeck.size()));
     
-    if(win)
+    if(win) {
+    	game.addCards(playerCard, ai1Card, game.player);
     	gameMessage.setText("Player Wins Round");
-    else
-    	gameMessage.setText("AI Wins Round");
+    }
+    else {
+    	game.addCards(playerCard, ai1Card, game.ai1);
+    	gameMessage.setText("AI Wins Round"); 
+    }
     
-    if((game.playerDeck.size() == 0) || (game.aiDeck.size() == 0)){
+    if((game.player.size() == 0) || (game.ai1.size() == 0)){
     	win = game.determineWinner();
     	end();
     }
+    ai1Total.setText(String.valueOf(game.ai1.size()));
+    playerTotal.setText(String.valueOf(game.player.size()));
 }
 
 public void end(){
