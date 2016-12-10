@@ -30,4 +30,13 @@ public class Hand {
     public Card remove(int i){
     	return hand.remove(i);
     }
+    
+    public void newHand() {
+    	this.hand.clear();
+    }
+    
+    // I know it's the same as remove, but I don't want to break anyone else's code
+    public Card playCard() {
+    	return this.remove(0);
+    }
 }
