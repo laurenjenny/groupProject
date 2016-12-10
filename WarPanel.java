@@ -168,8 +168,8 @@ public void resetCards(){
 
 public void draw(Card playerCard, Card ai1Card){
 	
-    ai1Card1.setIcon(game.ai1.get(0).getIcon());
-    playerCard1.setIcon(game.player.get(0).getIcon());
+	ai1Card1.setIcon(ai1Card.getIcon());
+    playerCard1.setIcon(playerCard.getIcon());
     ai1Card1.setVisible(true);
     playerCard1.setVisible(true);
     gameMessage.setVisible(true);
