@@ -39,12 +39,13 @@ public class War {
 	}
 	
 	public Card compareCards(Card card1, Card card2) {
+		System.out.println(card1.getFace().getValue());
 		if (card1.getFace().getValue() > card2.getFace().getValue())
 			return card1;
-		else if (card1.getFace().getValue() < card2.getFace().getValue())
-			return card2;
-		else
+		else if (card1.getFace().getValue() == card2.getFace().getValue())
 			return tieBreak(player, ai1);
+		else
+			return card2;
 	}
 	
 	public void addCards(Card card1, Card card2, Hand hand) {
